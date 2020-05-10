@@ -1,0 +1,247 @@
+<mat-progress-bar mode="query" color="accent" *ngIf="dataSource.length === 0"></mat-progress-bar>
+<div class="ql-individual-grade">
+  <div class="smd">
+    <div class="sm">
+      <div class="gap"></div>
+      <button mat-icon-button style="color: #f57f17" routerLink="/grade-manager" matTooltip="Դասարանների էջ">
+        <mat-icon class="i1">person</mat-icon>
+      </button>
+      <div class="gap0"></div>
+      <button mat-icon-button style="color: white" routerLink="/package-manager" matTooltip="Փաթեթների էջ">
+        <mat-icon class="i2">book</mat-icon>
+      </button>
+      <div class="gap"></div>
+      <button mat-icon-button style="color: white" matTooltip="Ելք համակարգից">
+        <mat-icon class="i2">exit_to_app</mat-icon>
+      </button>
+    </div>
+    <div class="image-container">
+      <img src="../../assets/images/book-woman illustration.png" height="120" width="144" class="book-woman"/>
+    </div>
+  </div>
+  <div class="main">
+    <div class="top-properties">
+      <div class="mtop"></div>
+      <div class="top">
+        <h1 style="color: dimgray;">ԱՇԱԿԵՐՏՆԵՐ</h1>
+        <div class="ptop"></div>
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Որոնել</mat-label>
+          <input type="text" matInput [(ngModel)]="searchText" (keyup.enter)="filterStudents()">
+          <button mat-icon-button *ngIf="isQueried" (click)="isQueried = false; searchText = ''" class="clear" matTooltip="Ջնջել">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-icon-button (click)="filterStudents()" color="accent" matTooltip="Որոնել">
+          <mat-icon style="color: dimgray !important; margin-top: 10% !important;">search</mat-icon>
+        </button>
+
+      </div>
+      <div class="bottom"></div>
+    </div>
+    <div class="other">
+      <div class="class-info">
+        <h2 style="color: dimgray">{{selectedIndex}}</h2>
+        <button  color="accent" mat-icon-button (click)="viewAddStudent()" matTooltip="Ավելացնել աշակերտ">
+          <mat-icon *ngIf="!isInAddMode">add_circle</mat-icon>
+          <mat-icon *ngIf="isInAddMode" style="color: #d84315 !important;">cancel</mat-icon>
+        </button>
+      </div>
+      <div class="expanded-form" *ngIf="isInAddMode">
+        <h2 style="color: dimgray"><i>Ավելացնել աշակերտ</i></h2>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Անուն/ազգանուն" [(ngModel)]="newStudentName"required >
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="ID" [(ngModel)]="newStudentID" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Էլ. փոստ" [(ngModel)]="newStudentEmail" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Հեռախոսահամար" [(ngModel)]="newStudentPhone" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Հասցե" [(ngModel)]="newStudentAddress" required>
+          </mat-form-field>
+        <button mat-raised-button color="accent" (click)="addStudent()" [disabled]="!manageDisable()" matTooltip="Ավելացնել աշակերտ">Ավելացնել</button>
+      </div>
+      <div class="titles">
+        <div class="id-container1"><h2>ID</h2></div>
+        <div class="name-container"><h2>Անուն</h2></div>
+        <div class="spacer1"></div>
+        <div class="status-container"><h2>Վերցրած գրքեր</h2></div>
+        <div class="spacer2"></div>
+        <div class="status-container"><h2>Հանձնած գրքեր</h2></div>
+      </div>
+      <div class="all-view" *ngIf="!isQueried">
+        <mat-accordion *ngFor="let student of dataSource; let i=index">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation();">
+              <mat-panel-title>
+                <div class="id-container">
+                  <mat-form-field class="ID_INPUT">
+                    <input type="text" matInput
+                           value="{{student[3]}}"
+                           [disabled]="isEditing"
+                            #ID>
+                  </mat-form-field>
+                </div>
+                <div class="spacerk"></div>
+                <div class="name-container">
+                  <mat-form-field class="NAME_INPUT">
+                    <input type="text" matInput
+                           value="{{student.valueOf()[2]}}"
+                           [disabled]="isEditing"
+                           #Name>
+                  </mat-form-field>
+                </div>
+                <div class="status-container" style="margin-top: 2% !important;">
+                  <p >{{student.valueOf()[5]}}/{{totalBooks}}</p>
+                </div>
+                <div class="spacer__"></div>
+                <div class="status-container" style="margin-top: 2% !important;">
+                  <p>{{student.valueOf()[4]}}/{{totalBooks}}</p>
+                </div>
+                <button mat-icon-button (click)="editStudentInfo()" *ngIf="student.valueOf()[3]" class="editButton" [disabled]="!isEditing" matTooltip="Խմբագրել տվյալները">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button  class="editButton" *ngIf="!isEditing" (click)="saveChanges(i)" matTooltip="Պահպանել">
+                  <mat-icon style="color: mediumseagreen !important;">done</mat-icon>
+                </button>
+                <button mat-icon-button class="editButton" (click)="openEdit(i)" matTooltip="Խմբագրել գրքերը">
+                  <mat-icon>menu</mat-icon>
+                </button>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="expanded-container">
+              <h3>Հեռախոսահամար ՝ </h3>
+              <mat-form-field class="exp_form">
+                <input type="text" matInput
+                       value="{{student.valueOf()[6]}}"
+                       [disabled]="isEditing"
+                        #phoneNumber>
+              </mat-form-field>
+              <br>
+            </div>
+            <div class="expanded-container">
+              <h3>Հասցե ՝ </h3>
+              <mat-form-field class="exp_form">
+                <input type="text" matInput
+                       value="{{student[0]}}"
+                       [disabled]="isEditing"
+                        #Address>
+              </mat-form-field>
+              <br>
+            </div>
+            <div class="expanded-container">
+            <h3>Էլ. փոստ ՝ </h3>
+            <mat-form-field class="exp_form">
+              <input type="text" matInput
+                     value="{{student.valueOf()[1]}}"
+                     [disabled]="isEditing"
+                      #Email>
+            </mat-form-field>
+          </div>
+            <div class="expanded-container">
+              <h3>Մեկնաբանություններ ՝  </h3>
+              <mat-form-field class="exp_form">
+                <textarea type="text" matInput
+                       value="{{student.valueOf()[9]}}"
+                       [disabled]="isEditing"
+                        #Comments>
+                </textarea>
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="filtered-view" *ngIf="isQueried">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation();">
+              <mat-panel-title>
+                <div class="id-container">
+                  <mat-form-field class="ID_INPUT">
+                    <input type="text" matInput
+                           value="{{filteredDataSource['ID']}}"
+                           [disabled]="isEditing"
+                           #ID>
+                  </mat-form-field>
+                </div>
+                <div class="spacerk"></div>
+                <div class="name-container">
+                  <mat-form-field class="NAME_INPUT">
+                    <input type="text" matInput
+                           value="{{filteredDataSource['Full Name']}}"
+                           [disabled]="isEditing"
+                           #Name>
+                  </mat-form-field>
+                </div>
+                <div class="status-container" style="margin-top: 2% !important;">
+                  <p >{{filteredDataSource['Number of Taken Books']}}/{{totalBooks}}</p>
+                </div>
+                <div class="spacer__"></div>
+                <div class="status-container" style="margin-top: 2% !important;">
+                  <p>{{filteredDataSource['Number of Returned Books']}}/{{totalBooks}}</p>
+                </div>
+                <button mat-icon-button (click)="editStudentInfo()" class="editButton" [disabled]="!isEditing" matTooltip="Խմբագրել տվյալները">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button  class="editButton" *ngIf="!isEditing" (click)="saveChanges(i)" matTooltip="Պահպանել">
+                  <mat-icon style="color: mediumseagreen !important;">done</mat-icon>
+                </button>
+                <button mat-icon-button class="editButton" (click)="openEditFiltered()" matTooltip="Խմբագրել գրքերը">
+                  <mat-icon>menu</mat-icon>
+                </button>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="expanded-container">
+              <h3>Հեռախոսահամար ՝ </h3>
+              <mat-form-field class="exp_form">
+                <input type="text" matInput
+                       value="{{filteredDataSource['Phone Number']}}"
+                       [disabled]="isEditing"
+                       #phoneNumber>
+              </mat-form-field>
+              <br>
+            </div>
+            <div class="expanded-container">
+              <h3>Հասցե ՝ </h3>
+              <mat-form-field class="exp_form">
+                <input type="text" matInput
+                       value="{{filteredDataSource['Address']}}"
+                       [disabled]="isEditing"
+                       #Address>
+              </mat-form-field>
+              <br>
+            </div>
+            <div class="expanded-container">
+              <h3>Էլ. փոստ ՝ </h3>
+              <mat-form-field class="exp_form">
+                <input type="text" matInput
+                       value="{{filteredDataSource['Email']}}"
+                       [disabled]="isEditing"
+                       #Email>
+              </mat-form-field>
+            </div>
+            <div class="expanded-container">
+              <h3>Մեկնաբանություններ ՝ </h3>
+              <mat-form-field class="exp_form">
+                <textarea type="text" matInput
+                          value="{{filteredDataSource['w_Comment']}}"
+                          [disabled]="isEditing"
+                          #Comments>
+                </textarea>
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <button mat-raised-button
+              color="warn"
+              class="doneButton"
+              (click)="isEditing = true" *ngIf="!isEditing" matTooltip="Չեղարկել"
+      >Cancel</button>
+  </div>
+</div>

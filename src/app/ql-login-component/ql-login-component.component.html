@@ -1,0 +1,34 @@
+<div class="login-page">
+  <div class="login-fill-fields" *ngIf="!keepSpinning">
+      <div class="gap"></div>
+      <h1>Բարի գալուստ «Էքս Լիբրիս»</h1>
+      <div class="gap1"></div>
+      <mat-form-field appearance="fill" color="accent">
+        <mat-label>Էլ. Փոստ</mat-label>
+        <input matInput type="email" [(ngModel)]="email">
+      </mat-form-field>
+      <mat-form-field appearance="fill" color="accent">
+        <mat-label>Գաղտնաբառ</mat-label>
+        <input matInput type="password" [(ngModel)]="password">
+      </mat-form-field>
+      <div class="gap1" *ngIf="!keepSpinning"></div>
+      <button mat-raised-button color="accent" routerLink="{{buttonRoute}}" (click)="signIn()" matTooltip="Մուտք գործել համակարգ">
+        Մուտք
+      </button>
+    </div>
+  <div class="login-info" *ngIf="!keepSpinning">
+    <div class="login-info-left">
+      <h2>Համակարգի մասին</h2>
+      <p>«Էքս Լիբրիս»-ը օնլայն գրադարան է, որն ավտոմատացնում է «Քվանտ» վարժարանի
+        գրադարանը։ Այն ստեղծվել է որպես հետազորական աշխատանք 2020 թվականին։ «Էքս Լիբրիս»-ն
+      առանձնանում է իր պարզությամբ և կիրառելիությամբ։</p>
+    </div>
+    <div class="login-info-right">
+      <h2>Գործառույթներ</h2>
+      <p>«Էքս Լիբրիս»-ի օգնությամբ գրադարանավարը կարող է հեշտությամբ նշանակել աշակերտների տարբեր գրքեր,
+      դասակարգել վարժարանի բոլոր գրքերը, փոփոխության ենթարկել թե' աշակերտների, թե' գրքերի վերաբերող
+      ցանկացած տվյալ, իմանալ, թե ում մոտ է գտնվում տվյալ գիրքը և շատ ավելին։</p>
+    </div>
+  </div>
+  <mat-spinner *ngIf="keepSpinning ===  true" color="warn"></mat-spinner>
+</div>

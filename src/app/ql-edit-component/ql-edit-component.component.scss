@@ -1,0 +1,115 @@
+.ql-manage-books {
+  overflow: scroll !important;
+}
+.ql-manage-books .mat-tab-label {
+  min-width: 10% !important;
+}
+.ql-manage-books .mat-tab-label.mat-tab-label-active {
+  min-width: 10% !important;
+}
+.ql-manage-books .book-row {
+  display: flex;
+}
+.ql-manage-books .book-row p{
+  margin-top:2%;
+}
+.ql-manage-books .divider {
+  height: 100%;
+  width:10%;
+}
+.ql-manage-books .divider_ {
+  height: 100%;
+  width:30px;
+}
+.ql-manage-books mat-list-item {
+  height:120% !important;
+}
+.ql-manage-books .barcode {
+  width:10%;
+  height: 2%;
+}
+.ql-manage-books mat-divider {
+  margin-top:4% !important;
+}
+.ql-manage-books .mat-tab-body-content {
+  overflow: scroll !important;
+}
+.ql-manage-books mat-checkbox {
+  margin-top:2%;
+}
+.ql-manage-books mat-form-field {
+  margin-left:3%;
+  width:80% !important;
+}
+.ql-manage-books .mat-form-field-wrapper {
+  width:100% !important;
+}
+.ql-manage-books h2 {
+  margin-top:1% !important;
+}
+.ql-manage-books .description {
+  display: flex;
+  width: 100%;
+  height:2%;
+  /*background-color: deeppink;*/
+}
+.ql-manage-books .description mat-checkbox {
+  margin-bottom: 1% !important;
+}
+.ql-manage-books .blank {
+  height: 100%;
+  width: 60%;
+  /*background-color: deepskyblue;*/
+}
+.ql-manage-books .gap_ {
+  height: 100%;
+  width:7%;
+  /*background-color: #5600bb;*/
+}
+.ql-manage-books .book-info {
+  width:60%;
+  height:100%;
+  display: flex;
+}
+.ql-manage-books .controls {
+  width:45%;
+  height: 100%;
+  display: flex;
+  margin-top:2%;
+}
+.ql-manage-books .book-title {
+  width:27%;
+  height:100%;
+  margin-top:2%;
+}
+.ql-manage-books .book-author {
+  height:100%;
+  width: 25%;
+  margin-top:2%;
+}
+.ql-manage-books .book-id {
+  height:100%;
+  width:20%;
+  margin-top:2%;
+}
+.ql-manage-books .footer {
+  width:100%;
+  height:4%;
+  display: flex;
+}
+.ql-manage-books .blankSpace {
+  height:100%;
+  width:83%;
+}
+.ql-manage-books .add {
+  width:100%;
+  height:7%;
+}
+.ql-manage-books .add mat-form-field {
+  width:20% !important;
+  margin-left:0px;
+}
+.ql-manage-books .list-items {
+  width:100%;
+  height:270px;
+}

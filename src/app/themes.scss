@@ -1,0 +1,11 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+
+$libris-primary: mat-palette($mat-deep-purple, 900); // or 900/600, we'll see
+$libris-accent: mat-palette($mat-pink, 900); // or mat-yellow 600/ mat-amber 600
+$libris-warn: mat-palette($mat-deep-orange, 800);
+
+$libris-theme: mat-light-theme($libris-primary, $libris-accent, $libris-warn);
+
+@include angular-material-theme($libris-theme);

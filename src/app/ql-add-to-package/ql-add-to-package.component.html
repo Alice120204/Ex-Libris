@@ -1,0 +1,56 @@
+<div class="ql-add-to-package">
+    <div class="header">
+      <h2 mat-dialog-title><i>ԱՎԵԼԱՑՆԵԼ ԳԻՐՔ ԱՅՍ ՓԱԹԵԹԻՆ</i></h2>
+      <h2>{{selectedGrade + packageType}} Փաթեթ</h2>
+      <mat-divider></mat-divider>
+    </div>
+<mat-dialog-content>
+  <div class="general_info">
+    <mat-form-field>
+      <mat-label>Առարկա</mat-label>
+      <input type="text" matInput [(ngModel)]="this.enteredSubject">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Վերնագիր</mat-label>
+      <input type="text" matInput [(ngModel)]="this.enteredTitle">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Հեղինակ</mat-label>
+      <input type="text" matInput [(ngModel)]="this.enteredAuthor">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Շապիկի URL</mat-label>
+      <input type="text" matInput [(ngModel)]="this.enteredCover">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Գրքերի քանակ</mat-label>
+      <input type="text" matInput [(ngModel)]="this.enteredNOB">
+    </mat-form-field>
+  </div>
+  <h3 *ngIf="lineToggle">Ավելացված գրքեր</h3>
+  <div class="individual_books" style="overflow: scroll" >
+    <mat-list *ngFor="let book of addedIndivBooks; let i = index">
+      <mat-list-item>
+        <p><b>ID: </b>{{book}}</p>
+        <button mat-icon-button style="color: indianred !important; margin-bottom: 10px" (click)="onDelete(i)" matTooltip="Ջնջել">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <mat-divider class="border" *ngIf="lineToggle"></mat-divider>
+  <div class="footer">
+    <mat-form-field>
+      <mat-label>Գրքի ID</mat-label>
+      <input type="text" matInput [(ngModel)]="this.enteredID" #bookID>
+    </mat-form-field>
+  </div>
+  <div class="action-buttons">
+    <div class="tex"><p>Դուք ավելացրել եք {{addedIndivBooks.length}} գիրք</p></div>
+    <button mat-raised-button color="primary" style="width:90px" class="add2" (click)="onAdd()" matTooltip="Ավելացնել">Ավելացնել</button>
+    <button mat-raised-button color="accent" style="width:90px" class="add3" (click)="onClose()" matTooltip="Պահպանել">Պահպանել</button>
+  </div>
+
+</mat-dialog-content>
+
+</div>

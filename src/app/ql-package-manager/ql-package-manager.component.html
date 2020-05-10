@@ -1,0 +1,348 @@
+<mat-progress-bar mode="query" color="accent" *ngIf="queriedBooks.length === 0"></mat-progress-bar>
+<div class="ql-package-manager">
+  <div class="side-menu-container">
+    <div class="gap1"></div>
+    <div class="side-menu">
+      <div class="gap"></div>
+      <button mat-icon-button style="color: white" routerLink="/grade-manager" matTooltip="Դասարանների էջ">
+        <mat-icon class="i1">person</mat-icon>
+      </button>
+      <div class="gap0"></div>
+      <button mat-icon-button   style="color: #f57f17" routerLink="/package-manager" matTooltip="Փաթեթների էջ">
+        <mat-icon class="i2">book</mat-icon>
+      </button>
+      <div class="gap"></div>
+      <button mat-icon-button style="color: white" matTooltip="Ելք համակարգից">
+        <mat-icon class="i2">exit_to_app</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="top-properties">
+      <div class="mtop"></div>
+      <div class="top">
+        <h1>ԳՐՔԵՐ</h1>
+        <div class="ptop"></div>
+
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Որոնել</mat-label>
+          <input type="text" matInput [(ngModel)]="searchText" (keyup.enter)="onSearch()">
+          <button mat-icon-button *ngIf="isSearched" (click)="isSearched = false; searchText = ''" class="clear" matTooltip="Ջնջել">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-icon-button (click)="onSearch()" matTooltip="Որոնել">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+      <div class="bottom"></div>
+    </div>
+    <div class="other">
+      <div class="general">
+        <div class="class-selector" *ngIf="!isSearched">
+          <button mat-flat-button (click)="onSelectGrade(5)" matTooltip="5-րդ դասարան" [ngClass]="{'selected-button': sel5 === true}">5</button>
+          <button mat-flat-button (click)="onSelectGrade(6)" matTooltip="6-րդ դասարան" [ngClass]="{'selected-button': sel6 === true}">6</button>
+          <button mat-flat-button (click)="onSelectGrade(7)" matTooltip="7-րդ դասարան" [ngClass]="{'selected-button': sel7 === true}">7</button>
+          <button mat-flat-button (click)="onSelectGrade(8)" matTooltip="8-րդ դասարան" [ngClass]="{'selected-button': sel8 === true}">8</button>
+          <button mat-flat-button (click)="onSelectGrade(9)" matTooltip="9-րդ դասարան" [ngClass]="{'selected-button': sel9 === true}">9</button>
+          <button mat-flat-button (click)="onSelectGrade(10)" matTooltip="10-րդ դասարան" [ngClass]="{'selected-button': sel10 === true}">10</button>
+          <button mat-flat-button (click)="onSelectGrade(11)" matTooltip="11-րդ դասարան" [ngClass]="{'selected-button': sel11 === true}">11</button>
+          <button mat-flat-button (click)="onSelectGrade(12)" matTooltip="12-րդ դասարան" [ngClass]="{'selected-button': sel12 === true}">12</button>
+        </div>
+        <div class="table" *ngIf="isDisabled" style="margin-left: 20px; margin-top: 20px">
+          <div class="book-selector"  *ngIf="!isSearched">
+            <div class="books-container">
+              <div class="package-name-container">
+                <h2>{{selectedGrade}}S Փաթեթ</h2>
+
+                <button mat-icon-button (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+              <div class="absence" *ngIf="queriedBooks.length === 0">
+                <h3><i>Այս փաթեթում գրքեր չկան</i></h3>
+                <button mat-icon-button
+                        class="add1"
+                        (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+              <div class="allPackageBooks">
+                <div class="bookContainer" *ngFor="let book of queriedBooks; let i = index">
+                  <div class="cover-container" *ngIf="book">
+                    <div class="hover-stuff" (mouseleave)="isHovered = false">
+                      <div class="img-container" style="text-align:center">
+                        <img src="{{book['Cover']}}" height="160px" width="120px" class="image" (mouseenter)="isHovered = true; hoverIndex = i">
+                      </div>
+                      <div class="displayed-if-hover">
+
+                        <button mat-icon-button color="warn" (click)="deleteBook(i)" class="delete" matTooltip="Ջնջել" *ngIf="isHovered && hoverIndex === i" (mouseleave)="isHovered = false; hoverIndex = null">
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                    <br>
+                    <p style="margin-bottom: 5px !important;"><b>{{book['Title']}}</b></p>
+                    <p style="margin-bottom: 5px !important;">Ներառված է <b>{{book['Number of Books']}} գիրք</b></p>
+                    <p style="margin-bottom: 5px !important;"><i>{{book['Author']}}</i></p>
+                    <div class="flexer" style="display: inline-flex;">
+                      <p style="color: dimgray; margin-bottom: 0px !important;"><i>{{book['w_Prefix']}}</i></p>
+                      <button mat-icon-button (click)="displayBooks(i)" matTooltip="Մանրամասն">
+                        <mat-icon>chevron_right</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table" *ngIf="!isSearched" style="margin-left: 20px">
+          <mat-tab-group *ngIf="!isDisabled" #tabGroup (selectedTabChange)="tabChanged($event)">
+            <mat-tab label="Ֆիզմաթ" [disabled]="isDisabled">
+              <div class="book-selector">
+                <div class="books-container">
+                  <div class="package-name-container">
+                    <h2>{{selectedGrade + gradeTypes[selectedTabIndex]}} Փաթեթ</h2>
+
+                    <button mat-icon-button (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <div class="absence" *ngIf="queriedBooks.length === 0">
+                    <h3><i>Այս փաթեթում գրքեր չկան</i></h3>
+                    <button mat-icon-button
+                            class="add1"
+                            (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <div class="allPackageBooks">
+                    <div class="bookContainer" *ngFor="let book of queriedBooks; let i = index">
+                      <div class="cover-container" *ngIf="book">
+                        <div class="hover-stuff" (mouseleave)="isHovered = false">
+                          <div class="img-container" style="text-align:center">
+                            <img src="{{book['Cover']}}" height="160px" width="120px" class="image" (mouseenter)="isHovered = true; hoverIndex = i">
+                          </div>
+                          <div class="displayed-if-hover">
+
+                            <button mat-icon-button color="warn" (click)="deleteBook(i)" class="delete" matTooltip="Ջնջել" *ngIf="isHovered && hoverIndex === i" (mouseleave)="isHovered = false; hoverIndex = null">
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                        <br>
+                        <p style="margin-bottom: 5px !important;"><b>{{book['Title']}}</b></p>
+                        <p style="margin-bottom: 5px !important;">Ներառված է <b>{{book['Number of Books']}} գիրք</b></p>
+                        <p style="margin-bottom: 5px !important;"><i>{{book['Author']}}</i></p>
+                        <div class="flexer" style="display: inline-flex;">
+                          <p style="color: dimgray; margin-bottom: 0px !important;"><i>{{book['w_Prefix']}}</i></p>
+                          <button mat-icon-button (click)="displayBooks(i)" matTooltip="Մանրամասն">
+                            <mat-icon>chevron_right</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Քիմկենս" [disabled]="isDisabled">
+              <div class="book-selector">
+                <div class="books-container">
+                  <div class="package-name-container">
+                    <h2>{{selectedGrade + gradeTypes[selectedTabIndex]}} Փաթեթ</h2>
+
+                    <button mat-icon-button (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <div class="absence" *ngIf="queriedBooks.length === 0">
+                    <h3><i>Այս փաթեթում գրքեր չկան</i></h3>
+                    <button mat-icon-button
+                            class="add1"
+                            (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <mat-list *ngFor="let book of queriedBooks; let i = index">
+                    <div class="allPackageBooks">
+                      <div class="bookContainer" *ngFor="let book of queriedBooks; let i = index">
+                        <div class="cover-container" *ngIf="book">
+                          <div class="hover-stuff" (mouseleave)="isHovered = false">
+                            <div class="img-container" style="text-align:center">
+                              <img src="{{book['Cover']}}" height="160px" width="120px" class="image" (mouseenter)="isHovered = true; hoverIndex = i">
+                            </div>
+                            <div class="displayed-if-hover">
+
+                              <button mat-icon-button color="warn" (click)="deleteBook(i)" class="delete" matTooltip="Ջնջել" *ngIf="isHovered && hoverIndex === i" (mouseleave)="isHovered = false; hoverIndex = null">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                          <br>
+                          <p style="margin-bottom: 5px !important;"><b>{{book['Title']}}</b></p>
+                          <p style="margin-bottom: 5px !important;">Ներառված է <b>{{book['Number of Books']}} գիրք</b></p>
+                          <p style="margin-bottom: 5px !important;"><i>{{book['Author']}}</i></p>
+                          <div class="flexer" style="display: inline-flex;">
+                            <p style="color: dimgray; margin-bottom: 0px !important;"><i>{{book['w_Prefix']}}</i></p>
+                            <button mat-icon-button (click)="displayBooks(i)" matTooltip="Մանրամասն">
+                              <mat-icon>chevron_right</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-list>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Տնտեսագիտական" [disabled]="isDisabled">
+              <div class="book-selector">
+                <div class="books-container">
+                  <div class="package-name-container">
+                    <h2>{{selectedGrade + gradeTypes[selectedTabIndex]}} Փաթեթ</h2>
+
+                    <button mat-icon-button (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <div class="absence" *ngIf="queriedBooks.length === 0">
+                    <h3><i>Այս փաթեթում գրքեր չկան</i></h3>
+                    <button mat-icon-button
+                            class="add1"
+                            (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <mat-list *ngFor="let book of queriedBooks; let i = index">
+                    <div class="allPackageBooks">
+                      <div class="bookContainer" *ngFor="let book of queriedBooks; let i = index">
+                        <div class="cover-container" *ngIf="book">
+                          <div class="hover-stuff" (mouseleave)="isHovered = false">
+                            <div class="img-container" style="text-align:center">
+                              <img src="{{book['Cover']}}" height="160px" width="120px" class="image" (mouseenter)="isHovered = true; hoverIndex = i">
+                            </div>
+                            <div class="displayed-if-hover">
+
+                              <button mat-icon-button color="warn" (click)="deleteBook(i)" class="delete" matTooltip="Ջնջել" *ngIf="isHovered && hoverIndex === i" (mouseleave)="isHovered = false; hoverIndex = null">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                          <br>
+                          <p style="margin-bottom: 5px !important;"><b>{{book['Title']}}</b></p>
+                          <p style="margin-bottom: 5px !important;">Ներառված է <b>{{book['Number of Books']}} գիրք</b></p>
+                          <p style="margin-bottom: 5px !important;"><i>{{book['Author']}}</i></p>
+                          <div class="flexer" style="display: inline-flex;">
+                            <p style="color: dimgray; margin-bottom: 0px !important;"><i>{{book['w_Prefix']}}</i></p>
+                            <button mat-icon-button (click)="displayBooks(i)" matTooltip="Մանրամասն">
+                              <mat-icon>chevron_right</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-list>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Հումանիտար" [disabled]="isDisabled">
+              <div class="book-selector">
+                <div class="books-container">
+                  <div class="package-name-container">
+                    <h2>{{selectedGrade + gradeTypes[selectedTabIndex]}} Փաթեթ</h2>
+
+                    <button mat-icon-button (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <div class="absence" *ngIf="queriedBooks.length === 0">
+                    <h3><i>Այս փաթեթում գրքեր չկան</i></h3>
+                    <button mat-icon-button
+                            class="add1"
+                            (click)="AddBook()" matTooltip="Ավելացնել գիրք">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                  <mat-list *ngFor="let book of queriedBooks; let i = index">
+                    <div class="allPackageBooks">
+                      <div class="bookContainer" *ngFor="let book of queriedBooks; let i = index">
+                        <div class="cover-container" *ngIf="book">
+                          <div class="hover-stuff" (mouseleave)="isHovered = false">
+                            <div class="img-container" style="text-align:center">
+                              <img src="{{book['Cover']}}" height="160px" width="120px" class="image" (mouseenter)="isHovered = true; hoverIndex = i">
+                            </div>
+                            <div class="displayed-if-hover">
+
+                              <button mat-icon-button color="warn" (click)="deleteBook(i)" class="delete" matTooltip="Ջնջել" *ngIf="isHovered && hoverIndex === i" (mouseleave)="isHovered = false; hoverIndex = null">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                          <br>
+                          <p style="margin-bottom: 5px !important;"><b>{{book['Title']}}</b></p>
+                          <p style="margin-bottom: 5px !important;">Ներառված է <b>{{book['Number of Books']}} գիրք</b></p>
+                          <p style="margin-bottom: 5px !important;"><i>{{book['Author']}}</i></p>
+                          <div class="flexer" style="display: inline-flex;">
+                            <p style="color: dimgray; margin-bottom: 0px !important;"><i>{{book['w_Prefix']}}</i></p>
+                            <button mat-icon-button (click)="displayBooks(i)" matTooltip="Մանրամասն">
+                              <mat-icon>chevron_right</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-list>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+        <div class="search-ui" *ngIf="isSearched">
+          <div class="information-titles" style="display: flex;">
+            <div class="marginik"></div>
+            <p>Գրքի ID</p>
+            <div class="divider_"></div>
+            <p>Վերցման օր</p>
+            <div style="width:60px; height:100%"></div>
+            <p>Հանձման օր</p>
+            <div class="divider_"></div>
+            <p>Աշակերտ</p>
+            <div class="divider_"></div>
+            <p>Աշակերտի ID</p>
+            <div class="divider_"></div>
+            <p>Աշակերտի դասարան</p>
+          </div>
+          <mat-list>
+            <mat-list-item class="search-result">
+              <img src="{{filteredBook['Cover']}}" alt="" height="10%" width="5%">
+              <div class="divider_"></div>
+              <p class="fullWidth1">{{filteredBook['ID']}}</p>
+              <div style="width:50px; height:100%"></div>
+              <div class="date-container">
+                <p>{{filteredBook['Taken Date']}}</p>
+              </div>
+              <div style="width:90px; height:100%"></div>
+              <div class="date-container">
+                <p *ngIf="filteredBook['Returned Date'] !== '-'">{{filteredBook['Returned Date']}}</p>
+              </div>
+              <div style="width:80px; height:100%"></div>
+              <p class="fullWidth">{{filteredBook['w_Owner']}}</p>
+              <div style="width:20px; height:100%"></div>
+              <div class="id-container" style="width:100px;">
+                <p>{{filteredBook['w_ID']}}</p>
+              </div>
+              <div style="width:110px; height:100%"></div>
+              <p style="width:50px">{{filteredBook['w_Grade']}}</p>
+              <div style="width: 40px"></div>
+              <button mat-icon-button id="copyToClipboard" [cdkCopyToClipboard]="copyValue" (click)="onCopy()" matTooltip="Պատճենել ID-ն">
+                <mat-icon>bookmark</mat-icon>
+              </button>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

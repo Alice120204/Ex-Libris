@@ -1,0 +1,375 @@
+<mat-progress-bar mode="query" color="accent" *ngIf="dataSource.length === 0"></mat-progress-bar>
+<div class="ql-grade-manager">
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav  mode="over" position="end"  [opened]="sideNavOpen" class="sidenav">
+      <div class="above-divider">
+        <div class="title-and-divider">
+          <h1><i>ՓԱԹԵԹՆԵՐԻ ՑԱՆԿ</i></h1>
+          <mat-divider></mat-divider>
+        </div>
+        <img src="../../assets/images/corner-illustration.png" class="illustration"/>
+      </div>
+      <div class="below-divider">
+        <mat-list *ngFor="let packageName of PackageNames; let i = index">
+          <mat-list-item>
+            <div class="package-name-container">
+              <p><b>{{packageName}}</b></p>
+            </div>
+            <div class="divider"></div>
+            <div class="package-description-container">
+              <p><i>{{PackageDescriptions[i]}}</i></p>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <button mat-raised-button color="primary" class="close-button" (click)="close()">Փակել</button>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="side-menu-container">
+        <div class="side-menu">
+          <div class="gap"></div>
+          <button mat-icon-button style="color: #f57f17" matTooltip="Դասարանների էջ">
+            <mat-icon class="i1">person</mat-icon>
+          </button>
+          <div class="gap0"></div>
+          <button mat-icon-button style="color: white" routerLink="/package-manager" matTooltip="Փաթեթների էջ">
+            <mat-icon class="i2">book</mat-icon>
+          </button>
+          <div class="gap"></div>
+          <button mat-icon-button style="color: white" matTooltip="Ելք համակարգից">
+            <mat-icon class="i2">exit_to_app</mat-icon>
+          </button>
+        </div>
+        <img src="../../assets/images/Girl.png" height="244" width="120" class="libGirl"/>
+      </div>
+      <div class="other">
+        <div class="top-properties">
+          <div class="mtop"></div>
+          <div class="top">
+            <h1 style="color: dimgray">ԱՇԱԿԵՐՏՆԵՐ</h1>
+            <div class="ptop"></div>
+          </div>
+          <div class="bottom"></div>
+        </div>
+        <div class="main-table">
+          <div class="class-selector">
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+              <mat-tab style="color: dimgray">
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  5
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon>
+                      <a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  6
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon>
+                      <a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել" class="icon-button">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել" class="icon-button">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  7
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon><a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել" class="icon-button">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել" class="icon-button">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  8
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon>
+                      <a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել" class="icon-button">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել" class="icon-button">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  9
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon>
+                      <a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել" class="icon-button">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել" class="icon-button">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  10
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon>
+                      <a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել" class="icon-button">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել" class="icon-button">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  11
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon>
+                      <a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել" class="icon-button">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել" class="icon-button">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label   *ngFor="let element of dataSource">
+                  12
+                </ng-template>
+                <div class="management">
+                  <div class="headers">
+                    <p>Դասարան</p>
+                    <div class="blank_1"></div>
+                    <p>Հոսք</p>
+                    <div class="blank_"></div>
+                    <p>Աշակերտների քանակ</p>
+                    <div class="blank_2"></div>
+                    <p>Փաթեթ</p>
+                  </div>
+                  <mat-list *ngFor="let element of dataSource; let i = index">
+                    <mat-list-item>
+                      <mat-icon [ngClass]="{'noProblems': element.valueOf()[0] === true}" *ngIf="element.valueOf()[0] !== 'none'">error</mat-icon>
+                      <mat-icon *ngIf="element.valueOf()[0] === 'none'" style="color: #0d47a1 !important;">panorama_fish_eye</mat-icon>
+                      <a style="color: #880e4f" routerLink="/individual-grade" (click)="onClassSelect($event)" matTooltip="Բացել աշակերտների ցանկը">{{element.valueOf()[1]}}</a>
+                      <div class="blank"></div>
+                      <div class="hosq-cont">
+                        <p style="color: dimgray; margin-top: 10px;">{{element.valueOf()[5]}}</p>
+                      </div>
+                      <p style="color: dimgray">{{element.valueOf()[2]}}</p>
+                      <div class="blank"></div>
+                      <mat-form-field>
+                        <input type="text" matInput value="{{element.valueOf()[3]}}" [disabled]="!editMode" style="color: dimgray" [(ngModel)]="dataSource[i][3]">
+                      </mat-form-field>
+                      <button mat-icon-button (click)="onEdit(i)" matTooltip="Խմբագրել" class="icon-button">
+                        <mat-icon class="editIcon">create</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onSave(i)" matTooltip="Պահպանել" class="icon-button">
+                        <mat-icon class="doneIcon">done</mat-icon>
+                      </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                  </mat-list>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+            <button mat-raised-button color="accent" *ngIf="dataSource.length !== 0" class="package-button" (click)="openSidenav()">{{buttonName}}</button>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

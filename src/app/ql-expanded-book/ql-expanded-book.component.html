@@ -1,0 +1,64 @@
+<div class="ql-expanded-book">
+  <div class="expanded-container">
+    <div class="expanded-view">
+      <h2><i>ՆԵՐԱՌՎԱԾ ԳՐՔԵՐ</i></h2>
+      <h3 *ngIf="includedBooks[i]" style="color: dimgray; font-weight: bold">{{includedBooks[i][0]['Subject']}}</h3>
+      <br>
+      <mat-divider *ngIf="includedBooks.length !== 0"></mat-divider>
+      <div style="width:100%; height:40px"></div>
+      <div class="list-items" style="overflow: scroll;">
+        <div class="information-titles" style="display: flex;">
+          <div class="marginik"></div>
+          <p>Գրքի ID</p>
+          <div style="width:60px; height:100%"></div>
+          <p>Վերցման օր</p>
+          <div style="width:60px; height:100%"></div>
+          <p>Հանձման օր</p>
+          <div style="width:60px; height:100%"></div>
+          <p>Աշակերտ</p>
+          <div style="width:60px; height:100%"></div>
+          <p>Աշակերտի ID</p>
+          <div style="width:60px; height:100%"></div>
+          <p>Աշակերտի դասարան</p>
+        </div>
+        <mat-list *ngFor="let item  of includedBooks[i]; let i=index;  ">
+          <mat-list-item *ngIf="item">
+            <div style="width:20px; height:100%"></div>
+            <p class="fullWidth1" style="margin-bottom: 35px;">{{item['ID']}}</p>
+            <div class="divider_"></div>
+            <div class="date-container">
+              <p>{{item['Taken Date']}}</p>
+            </div>
+            <div style="height:100%; width:40px"></div>
+            <div class="date-container">
+              <p *ngIf="item['Returned Dare'] !== '-'">{{item['Returned Date']}}</p>
+            </div>
+            <div style="height:100%; width:40px"></div>
+            <p class="fullWidth" style="margin-bottom: 35px;">{{item['w_Owner']}}</p>
+            <div style="height:100%; width:40px"></div>
+            <p style="margin-bottom: 40px;">{{item['w_ID']}}</p>
+            <div style="height:100%; width:100px"></div>
+            <p class="fullWidth" style="margin-bottom: 35px;">{{item['w_Grade']}}</p>
+            <div class="divider_"></div>
+            <button mat-icon-button  class="delete" (click)="removeBook(i)" matTooltip="Ջնջել">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+    <mat-divider class="controlDivider" *ngIf="includedBooks.length !== 0"></mat-divider>
+    <div class="actions">
+      <mat-form-field *ngIf="includedBooks.length !== 0" class="editBook" appearance="outline" #addToPackage>
+        <input matInput type="text" placeholder="Ավելացնել գիրք" [(ngModel)]="newBookID">
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="addBook" (click)="addBookToPackage()" matTooltip="Ավելացնել" *ngIf="includedBooks.length !== 0">
+        Ավելացնել
+      </button>
+      <button mat-raised-button color="accent" style="margin-left: 2%" (click)="save()" matTooltip="Պահպանել" *ngIf="includedBooks.length !== 0">
+        Պահպանել
+      </button>
+    </div>
+ </div>
+</div>
+
